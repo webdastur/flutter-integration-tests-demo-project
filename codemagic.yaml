@@ -7,35 +7,24 @@ workflows:
       vars:
         GCLOUD_KEY_FILE: Encrypted(...) # <-- Put your encrypted Google Cloud Key file here
         GOOGLE_CREDENTIALS: Encrypted(...) # <-- Put your encrypted google-services.json here if publishing to Google Play
-        FIREBASE_PROJECT: "YOUR_FIREBASE_PROJECT_NAME"
-        FCI_KEYSTORE_PATH: /tmp/keystore.keystore
-        FCI_KEYSTORE: Encrypted(...) # <-- Put your encrypted keystore file here
-        FCI_KEYSTORE_PASSWORD: Encrypted(...) # <-- Put your encrypted keystore password here
-        FCI_KEY_ALIAS_PASSWORD: Encrypted(...) # <-- Put your encrypted keystore alias password here
-        FCI_KEY_ALIAS_USERNAME: Encrypted(...) # <-- Put your encrypted keystore alias username here
+        FIREBASE_PROJECT: "YOUR_FIREBASE_PROJECT_NAME" # <-- Put your Firebase Project Name here
       flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up key.properties 
+      - name: Set up debug.keystore
         script: |
-          echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH
-          cat >> "$FCI_BUILD_DIR/android/key.properties" <<EOF
-          storePassword=$FCI_KEYSTORE_PASSWORD
-          keyPassword=$FCI_KEY_PASSWORD
-          keyAlias=$FCI_KEY_ALIAS
-          storeFile=/tmp/keystore.keystore
-          EOF
+          rm -f ~/.android/debug.keystore
+          keytool -genkeypair -alias androiddebugkey -keypass android -keystore ~/.android/debug.keystore -storepass android -dname 'CN=Android Debug,O=Android,C=US' -keyalg 'RSA' -keysize 2048 -validity 10000
       - name: Set up local.properties
         script: |
-          # 
           echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - name: Get Flutter packages  
         script: |
           cd . && flutter packages pub get
       - name: Build APK with Flutter  
         script: |
-          cd . && flutter build apk --release
+          cd . && flutter build apk --debug
       - name: Create debug and test APK  
         script: |
           set -ex
@@ -78,7 +67,3 @@ workflows:
         notify:
           success: true               # To not receive a notification when a build succeeds
           failure: false              # To not receive a notification when a build fails
-      # google_play:
-      #   credentials: $GOOGLE_CREDENTIALS
-      #   track: internal
-      #   in_app_update_priority: 0

@@ -7,22 +7,19 @@ import 'dart:io';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets(
-    "No input in name field displays error validation text",
-    (WidgetTester tester) async {
-      await tester.pumpWidget(MyApp());
+  testWidgets('No input in name field displays error validation text',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp());
 
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
 
-      expect(find.byType(MyHomePage), findsOneWidget);
-
-      expect(find.text('Input some text!'), findsOneWidget);
-    },
-  );
+    expect(find.byType(MyHomePage), findsOneWidget);
+    expect(find.text('Input some text!'), findsOneWidget);
+  });
 
   testWidgets(
-    "Text is entered into field and Alert is shown inclucing name entered.",
+    'Text is entered into field and Alert is shown inclucing name entered',
     (WidgetTester tester) async {
       await tester.pumpWidget(MyApp());
 
@@ -32,16 +29,11 @@ void main() {
       await tester.tap(find.byType(FloatingActionButton));
       await tester.pumpAndSettle();
 
-      expect(find.text('Hello, Kevin!'), findsOneWidget);
+      expect(find.text('Hey, Kevin!'), findsOneWidget);
 
       sleep(Duration(seconds: 5));
 
-      await tester.tap(find.byType(FlatButton));
-      await tester.pumpAndSettle();
-
-      sleep(Duration(seconds: 5));
-
-      await tester.tap(find.byType(FloatingActionButton));
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
     },
   );

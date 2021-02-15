@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +9,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(),
       home: MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -32,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void setText(String newText) {
     FocusScope.of(context).unfocus();
     if (newText != "") {
+      _controller.clear();
       _showDialog(newText);
     }
     setState(() {
@@ -58,12 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Greeting"),
-          content: new Text("Hello, $alertText!"),
+          title: Text('Hey, $alertText!'),
+          content: Text(
+              'You are looking sharp today!\n\nIt is going to be a great day!'),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
+            TextButton(
+              child: Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -79,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
-        title: Text('Integration Test'),
+        title: Text('Feel Good App'),
       ),
       body: Center(
         child: Container(
@@ -87,32 +86,31 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // Container(
-              //     child: SvgPicture.asset(
-              //   "assets/text-svgrepo-com.svg",
-              //   placeholderBuilder: (context) => CircularProgressIndicator(),
-              //   height: 80.0,
-              // )),
+              Image.asset(
+                'assets/happy-smiley.png',
+                width: 180.0,
+                height: 180.0,
+              ),
+              SizedBox(
+                height: 40.0,
+              ),
               Container(
-                  padding: EdgeInsets.all(20.0),
-                  child: Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.black),
-                      key: Key('text-field'),
-                      controller: _controller,
-                      decoration: kTextInputStyle,
-                      validator: (value) =>
-                          value.isEmpty ? 'Input some text!' : null,
-                    ),
-                  )),
+                padding: EdgeInsets.all(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.black),
+                    key: Key('text-field'),
+                    controller: _controller,
+                    decoration: kTextInputStyle,
+                    validator: (value) =>
+                        value.isEmpty ? 'Input some text!' : null,
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20.0,
               ),
-              // Text(
-              //   text,
-              //   style: Theme.of(context).textTheme.headline4,
-              // ),
             ],
           ),
         ),
@@ -122,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => {
           if (_formKey.currentState.validate())
             {setText(_controller.text)}
-          //{setText("Bingo!")}
           else
             (setText(''))
         },
