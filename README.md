@@ -62,6 +62,10 @@ Future<void> main() => integrationDriver();
 
 ## Preparing the Integration tests file
 
+Please refer to the documentation provided for the integration test package [here](https://pub.dev/packages/integration_test). 
+
+The following instructions below are here only for your convenience.
+
 Create a folder called `integration_test` in the root of your project and add a file called `app_test.dart`. To start with add the following:
 
 ```
@@ -118,7 +122,7 @@ flutter driver --driver=test_driver/integration_driver.dart --tartget=integratio
     }
 
 ```
-4. Under `app/src/main/kotlin` add folders to match the structur of your package name e.g. `app/src/main/kotlin/io/codemagic/integration`. 
+4. Under `android/app/src/main/kotlin` add folders to match the structur of your package name e.g. `android/app/src/main/kotlin/io/codemagic/integration`. 
 5. Add a file called `MainActivity.kt` with the following contents:
 
 ```
@@ -131,6 +135,21 @@ flutter driver --driver=test_driver/integration_driver.dart --tartget=integratio
     }
 
 ```
+
+6. In `android/app/build.gradle` add the following lines to your dependencies section:
+
+```
+
+dependencies {
+    ...
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+```
+
 
 ## Understanding the scripts to run tests on Firebase Test Lab
 
